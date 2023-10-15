@@ -1,0 +1,26 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: ${DATABASE}
+      POSTGRES_USER: ${USER}
+      POSTGRES_PASSWORD: ${PASSWORD}
+      POSTGRES_PORT: ${POST_PORT}
+    ports:
+      - "5433:5432"
+
+  astrologservice:
+    build:
+      context: .
+    container_name: astrologservice
+    depends_on:
+      - postgres
+    environment:
+      HOST: postgres
+      PORT: ${PORT}
+      DATABASE: ${DATABASE}
+      PASSWORD: ${PASSWORD}
+    ports:
+      - "${PORT}:${PORT}"
